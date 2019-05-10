@@ -2,6 +2,120 @@
 
 require_once("credentials.php");
 
+Class Items {
+function getItems() {
+    $mysqli = mysqli_connect("localhost", "cse383", "HoABBHrBfXgVwMSz", "cse383");
+    $items = mysqli_query($mysqli, "SELECT * from diaryItems");
+    $itemSet=array();    
+    while ($data=$items->fetch_assoc()) {  
+        array_push($itemSet,$data);
+    }
+    return $itemSet;
+}
+
+function getItemsByUser($userPk) {
+    $userPk = intval($userPk);
+    $mysqli = mysqli_connect("localhost", "cse383", "HoABBHrBfXgVwMSz", "cse383");
+            if($stmt = $mysqli->prepare("SELECT diaryItems.item,timestamp from diaryItems left join diary on diaryItems.pk=diary.itemFK  
+                where userFK=? order by timestamp desc limit 30")) {
+				if (!$stmt->bind_param("s",$userPk)) {   // BIND THE QUERY WITH THE VARIABLES
+				} 
+				else {
+						if (!$stmt->execute()) {     // EXECUTE THE QUERY
+						} 
+						else {
+								$result=$stmt->get_result();      // GET THE RESULT FROM THE QUERY
+								$dataset=array();      // CREATE AN ARRAY TO STORE ALL THE RESULTS
+								while ($data=$result->fetch_assoc()) {    // READ EACH RESULT AND STORE IT IN $data
+                                array_push($dataset,$data);    // ADD EACH $data TO THE ARRAY
+                                return $dataset;
+						}
+						}
+				}
+		}
+		else {
+        }
+        $userPk = $dataset[0];
+}
+
+function getUser($token) {
+    $mysqli = mysqli_connect("localhost", "cse383", "HoABBHrBfXgVwMSz", "cse383");
+    if($stmt = $mysqli->prepare("SELECT users.pk from users join tokens on users.user=tokens.user where tokens.token=?")) {
+                if (!$stmt->bind_param("s",$token)) {   // BIND THE QUERY WITH THE VARIABLES
+                    return "Fail1";
+				} 
+				else {
+                        if (!$stmt->execute()) {     // EXECUTE THE QUERY
+                            return "Fail2";
+						} 
+						else {
+                            $userPk = $stmt -> get_result();
+                            $dataset=array();
+                            while ($data=$userPk->fetch_assoc()) {    // READ EACH RESULT AND STORE IT IN $data
+								array_push($dataset,$data);    // ADD EACH $data TO THE ARRAY
+                            }
+                            return $dataset[0];
+						}
+				}
+		}
+		else {
+            return "Fail3";
+        }
+}
+
+function updateItems($itemPk, $userPk) {
+    $itemPk = intval($itemPk);
+    $userPk = intval($userPk);
+    $time = date('Y-m-d');
+    $mysqli = mysqli_connect("localhost", "cse383", "HoABBHrBfXgVwMSz", "cse383");
+    if($stmt = $mysqli->prepare("INSERT into diary (userFK, itemFK, timestamp) values (?,?,?)")) {
+                if (!$stmt->bind_param("iis",$userPk, $itemPk, $time)) {   // BIND THE QUERY WITH THE VARIABLES
+                    return "Fail4";
+				} 
+				else {
+                        if (!$stmt->execute()) {     // EXECUTE THE QUERY
+                            return "Fail5";
+						} 
+						else {
+                            return "OK";
+						}
+					
+				}
+		}
+		else {
+            return "Fail6";
+        }
+}
+
+function getSummary($userPk) {
+    $userPk = intval($userPk);
+    $mysqli = mysqli_connect("localhost", "cse383", "HoABBHrBfXgVwMSz", "cse383");
+    if($stmt = $mysqli->prepare("SELECT diaryItems.item,count(timestamp) as count from diaryItems left join diary on diaryItems.pk=diary.itemFK  
+                where userFK=? group by diaryItems.item")) {
+        if (!$stmt->bind_param("i",$userPk)) {   // BIND THE QUERY WITH THE VARIABLES
+            return "Fail";
+        } 
+        else {
+                if (!$stmt->execute()) {     // EXECUTE THE QUERY
+                    return "Fail";
+                } 
+                else {
+                    $result=$stmt->get_result();      // GET THE RESULT FROM THE QUERY
+					$dataset=array();      // CREATE AN ARRAY TO STORE ALL THE RESULTS
+					while ($data=$result->fetch_assoc()) {    // READ EACH RESULT AND STORE IT IN $data
+                    array_push($dataset,$data);
+                    }
+                    return $dataset;
+                }
+            
+        }
+}
+else {
+    return "Fail";
+}
+}
+}
+
 class Users {
     private $mysqli=null;
 
