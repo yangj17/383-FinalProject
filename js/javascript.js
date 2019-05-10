@@ -1,8 +1,20 @@
+function hideLogin() {
+    $("#authentication").hide();
+    $("#authorPage").show();
+}
+
+function returnToLogin() {
+    $("#authorPage").hide();
+    $("#authentication").show();
+}
+
+
+
 $(document).ready(function() {
     $("#authenticateBtn").click(function() {;
         authenticateUser();
     });
-
+   
 });
 
 function authenticateUser() {
