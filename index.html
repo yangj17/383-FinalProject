@@ -15,17 +15,20 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
         <!-- Javascript-->
-        <script src=js/javascript.js></script>
+        <script src="js/javascript.js"></script>
 
     </head>
     <body>
         <div id="authentication">
+            <h1 class="display-1">Please Log In</h1> <br>
             <label for="username">Username</label>
             <input type="text" id="username">
             <label for="password">Password</label>
             <input type="text" id="password">
             <button type="button" class="btn btn-primary" id="authenticateBtn">Submit</button>
+            <button type="button" class="btn btn-primary" onclick=hideLogin()>Authors</button>
         </div>
+        <div id="app">
         <div id="data">
 
         </div>
@@ -34,7 +37,37 @@
         </div>
 
         <div id="diary">
+        </div>
+        </div>
 
+        <div id="authorPage" class="container" style="display:none"> 
+            <h1 class="display-2">Authors</h1>
+            <div class="row">
+                <div class="profile col-4">     
+                    <img height="450" width="300" src="images/jackprofile.jpg" alt="jack profile pic">
+                </div>
+                <div class="col-4">
+                    Jack Schroer
+                </div>
+                <div class="col-4">
+                    Jack is a senior software engineering major from Columbus, Ohio. He plays
+                        offensive line for Miami's football team. In his free time, he likes to 
+                        lift weights and play video games. 
+                </div>
+            </div>
+            <div class="row">
+                        <div class="profile col-4">
+                            <img height="450" width="300" src="images/jing.jpg">
+                        </div>
+                        <div class="col-4">
+                            Jing Yang
+                        </div>
+                        <div class="col-4">
+                            Jing is a junior computer science major from Oxford, Ohio. He enjoys
+                            reading and playing video games in his spare time.
+                        </div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="returnToLogin()">Back to login</button>
         </div>
     </body>
 </html>
